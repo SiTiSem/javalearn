@@ -10,7 +10,7 @@ public class Main {
         String[] scanSplit;
         try {
             scanSplit = scan.split(" ");
-            Output(Calc(scanSplit));
+            Calc(scanSplit);
         }
         catch(Exception e) {
             System.out.println("Введены некорретные значения");
@@ -18,13 +18,12 @@ public class Main {
         }
     }
 
-    private static int Calc(String[] scanSplit) {
+    private static void Calc(String[] scanSplit) {
         String Str1 = scanSplit[0];
         String Str2 = scanSplit[2];
         String MathSing = scanSplit[1];
         int Num1 = 0;
         int Num2 = 0;
-        int result = 0;
 
         try {
             if (!TryMathSing(MathSing) || (!TryNum(Str1, Str2) && !TryArab(Str1, Str2))) {
@@ -39,27 +38,15 @@ public class Main {
         if (TryArab(Str1, Str2)) {
             Num1 = ArabConvert(Str1);
             Num2 = ArabConvert(Str2);
+            int result = Math(MathSing, Num1, Num2);
+            System.out.println(RomeConvert(result));
         }
         else {
             Num1 = Integer.parseInt(Str1);
             Num2 = Integer.parseInt(Str2);
+            int result = Math(MathSing, Num1, Num2);
+            System.out.println(result);
         }
-
-        switch (MathSing) {
-            case "+":
-                result = Num1 + Num2;
-                break;
-            case "-":
-                result = Num1 - Num2;
-                break;
-            case "*":
-                result = Num1 * Num2;
-                break;
-            case "/":
-                result = Num1 / Num2;
-                break;
-        }
-        return result;
     }
 
     private static String Scan() {
@@ -110,7 +97,62 @@ public class Main {
         return num;
     }
 
-    private static void Output(int number) {
-        System.out.println(number);
+    private static String RomeConvert(int arg) {
+        int i = arg / 10;
+        int mod = arg % 10;
+        String a1 = "";
+        String a2 = "";
+        switch (i) {
+            case 1: a1 = "X"; break;
+            case 2: a1 = "XX"; break;
+            case 3: a1 = "XXX"; break;
+            case 4: a1 = "XL"; break;
+            case 5: a1 = "L"; break;
+            case 6: a1 = "LX"; break;
+            case 7: a2 = "LXX"; break;
+            case 8: a2 = "LXXX"; break;
+            case 9: a2 = "XC"; break;
+            case 10: a2 = "C"; break;
+        }
+        switch (mod) {
+            case 1: a2 = "I"; break;
+            case 2: a2 = "II"; break;
+            case 3: a2 = "III"; break;
+            case 4: a2 = "IV"; break;
+            case 5: a2 = "V"; break;
+            case 6: a2 = "VI"; break;
+            case 7: a2 = "VII"; break;
+            case 8: a2 = "VIII"; break;
+            case 9: a2 = "IX"; break;
+        }
+        return (a1 + a2);
+    }
+
+    private static int Math(String MathSing, int Num1, int Num2) {
+        int result = 0;
+        switch (MathSing) {
+            case "+":
+                result = Num1 + Num2;
+                break;
+            case "-":
+                result = Num1 - Num2;
+                break;
+            case "*":
+                result = Num1 * Num2;
+                break;
+            case "/":
+                result = Num1 / Num2;
+                break;
+        }
+        try {
+            if (result < 1) {
+                throw new Exception();
+            }
+        }
+        catch(Exception e) {
+            System.out.println("Значение меньше 1");
+            System.exit(0);
+        }
+        return result;
     }
 }
